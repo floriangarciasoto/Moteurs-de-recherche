@@ -32,7 +32,7 @@
 
 		$('#search').keyup(function(k){if(k.keyCode === 13){
 			var search = $(this).val();
-			$('#results').html('Resultats de recherche pour '+search+' :<br/><br/>');
+			$('#results').html('Résultats de recherche pour '+search+' :<br/><br/>');
 			for (i in articles) {
 				if (articles[i]['name'].replace(search,'') != articles[i]['name']
 					|| articles[i]['content'].replace(search,'') != articles[i]['content']) $('#results').append(articles[i]['name']+'<br/>');
