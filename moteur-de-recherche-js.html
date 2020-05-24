@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Moteur de recherche en JS</title>
+	<meta charset="utf-8" name="viewport" content="width=device-width"/>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+
+		articles = [
+			{
+				'name' : 'Pour la première fois, SpaceX va envoyer des astronautes dans l\'espace',
+				'content' : 'Washington (AFP) - Après le fret, les hommes: la société spatiale américaine SpaceX va lancer deux astronautes de la Nasa mercredi prochain vers la Station spatiale internationale, une première qui se double d\'un autre jalon historique: ce sera le premier vol habité lancé depuis les Etats-Unis en neuf longues années.'
+			},
+			{
+				'name' : 'Le premier vol dans l’espace d’une fusée Space X s’apprête à débuter',
+				'content' : 'C’est un vol historique qui se prépare. Mercredi 27 mai à minuit 32, heure française, la fusée Space X devrait sauver l’honneur de l’Amérique. Elle emmènera dans l’espace deux astronautes : Robert Behnken et Douglas Hurley. Cela fait près de 10 ans que les Américains n’ont pas réalisé de vol habité. "Je suis très excité. C’est un moment extraordinaire pour un astronaute que de voler dans un vaisseau entièrement nouveau", se réjouit Robert Behnken.'
+			},
+			{
+				'name' : 'Comment la souris de nos ancêtres a créé le chat que nous connaissons aujourd\'hui',
+				'content' : 'La souris grise, l\'une des espèces de mammifères les plus invasives, a profité de la sédentarisation des premières populations humaines il y a 15.000 ans pour conquérir la planète, selon une étude qui montre une concomitance avec les premiers chats domestiques. C\'est au Proche-Orient qu\'a démarré l\'histoire de l\'invasion biologique de «Mus musculus», communément appelée souris grise, ou domestique, révèle une équipe internationale impliquant huit pays dans la revue Scientific Reports.'
+			},
+			{
+				'name' : 'La merveilleuse présence des mathématiques dans la nature',
+				'content' : 'Avez-vous déjà observé la forme d’une fleur de tournesol, la structure d’un flocon de neige ou la morphologie d’une fougère ? Au-delà de leur beauté fascinante, on peut aussi y voir des objets mathématiques, puisque les spirales de la fleur de tournesol suivent une célèbre suite numérique appelée suite de Fibonacci, les flocons de neige présentent des symétries hexagonales particulières et la morphologie de la fougère décrit une géométrie fractale.'
+			},
+			{
+				'name' : 'Windows 10, à l’image de Linux Microsoft annonce un gestionnaire de paquets',
+				'content' : 'Ce gestionnaire de paquets sous Windows 10 est évidemment inspiré du monde Linux. Il s’inscrit dans une démarche plus globale visant un rapprochant entre les deux systèmes d’exploitation. Depuis plusieurs années maintenant Microsoft s’est officiellement engagé dans le monde Linux. Après avoir lancé le sous-système Windows pour Linux, y compris sa deuxième version avec l’arrivée de Windows 10 Mai 2020, le géant présente un gestionnaire de paquets. La démarche permet de faire les yeux doux aux utilisateurs de Linux puisqu’ils ne seront plus trop dépaysés avec Windows 10.'
+			}
+		];
+
+		$('#search').keyup(function(k){if(k.keyCode === 13){
+			var search = $(this).val();
+			$('#results').html('Resultats de recherche pour '+search+' :<br/><br/>');
+			for (i in articles) {
+				if (articles[i]['name'].replace(search,'') != articles[i]['name']
+					|| articles[i]['content'].replace(search,'') != articles[i]['content']) $('#results').append(articles[i]['name']+'<br/>');
+			}
+		}});
+
+		for (i in articles) $('#articles').append('<tr><td><b>'+articles[i]['name']+'</b></td></tr><tr><td>'+articles[i]['content']+'</td></tr>');
+	});
+	</script>
+</head>
+<body>
+	Rechercher : <input type="text" id="search" size="30"/>
+	<div id="results"></div>
+	<hr/>
+	<h3>Les articles sur lesquels les recherches sont effectuées :</h3>
+	<table id="articles"></table>
+</body>
+</html>
