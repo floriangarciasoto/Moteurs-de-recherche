@@ -2,50 +2,196 @@
 <html>
 <head>
 	<title>Moteur de recherche en JS</title>
-	<meta charset="utf-8" name="viewport" content="width=device-width"/>
+	<meta charset="utf-8" nom="viewport" contenu="width=device-width"/>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 
+		// Articles représentants notre base de données sur laquelle on va travailler
 		articles = [
 			{
-				'name' : 'Pour la première fois, SpaceX va envoyer des astronautes dans l\'espace',
-				'content' : 'Washington (AFP) - Après le fret, les hommes: la société spatiale américaine SpaceX va lancer deux astronautes de la Nasa mercredi prochain vers la Station spatiale internationale, une première qui se double d\'un autre jalon historique: ce sera le premier vol habité lancé depuis les Etats-Unis en neuf longues années.'
+				// Chaque article est défini sous la forme suivante :
+
+				// Nom de l'article
+				'nom' : 'Pour la première fois, SpaceX va envoyer des astronautes dans l\'espace',
+
+				// Contenu de l'article
+				'contenu' : 'Washington (AFP) - Après le fret, les hommes: la société spatiale américaine SpaceX va lancer deux astronautes de la Nasa mercredi prochain vers la Station spatiale internationale, une première qui se double d\'un autre jalon historique: ce sera le premier vol habité lancé depuis les Etats-Unis en neuf longues années.'
 			},
 			{
-				'name' : 'Le premier vol dans l’espace d’une fusée Space X s’apprête à débuter',
-				'content' : 'C’est un vol historique qui se prépare. Mercredi 27 mai à minuit 32, heure française, la fusée Space X devrait sauver l’honneur de l’Amérique. Elle emmènera dans l’espace deux astronautes : Robert Behnken et Douglas Hurley. Cela fait près de 10 ans que les Américains n’ont pas réalisé de vol habité. "Je suis très excité. C’est un moment extraordinaire pour un astronaute que de voler dans un vaisseau entièrement nouveau", se réjouit Robert Behnken.'
+				'nom' : 'Le premier vol dans l’espace d’une fusée Space X s’apprête à débuter',
+				'contenu' : 'C’est un vol historique qui se prépare. Mercredi 27 mai à minuit 32, heure française, la fusée Space X devrait sauver l’honneur de l’Amérique. Elle emmènera dans l’espace deux astronautes : Robert Behnken et Douglas Hurley. Cela fait près de 10 ans que les Américains n’ont pas réalisé de vol habité. "Je suis très excité. C’est un moment extraordinaire pour un astronaute que de voler dans un vaisseau entièrement nouveau", se réjouit Robert Behnken.'
 			},
 			{
-				'name' : 'Comment la souris de nos ancêtres a créé le chat que nous connaissons aujourd\'hui',
-				'content' : 'La souris grise, l\'une des espèces de mammifères les plus invasives, a profité de la sédentarisation des premières populations humaines il y a 15.000 ans pour conquérir la planète, selon une étude qui montre une concomitance avec les premiers chats domestiques. C\'est au Proche-Orient qu\'a démarré l\'histoire de l\'invasion biologique de «Mus musculus», communément appelée souris grise, ou domestique, révèle une équipe internationale impliquant huit pays dans la revue Scientific Reports.'
+				'nom' : 'Comment la souris de nos ancêtres a créé le chat que nous connaissons aujourd\'hui',
+				'contenu' : 'La souris grise, l\'une des espèces de mammifères les plus invasives, a profité de la sédentarisation des premières populations humaines il y a 15.000 ans pour conquérir la planète, selon une étude qui montre une concomitance avec les premiers chats domestiques. C\'est au Proche-Orient qu\'a démarré l\'histoire de l\'invasion biologique de «Mus musculus», communément appelée souris grise, ou domestique, révèle une équipe internationale impliquant huit pays dans la revue Scientific Reports.'
 			},
 			{
-				'name' : 'La merveilleuse présence des mathématiques dans la nature',
-				'content' : 'Avez-vous déjà observé la forme d’une fleur de tournesol, la structure d’un flocon de neige ou la morphologie d’une fougère ? Au-delà de leur beauté fascinante, on peut aussi y voir des objets mathématiques, puisque les spirales de la fleur de tournesol suivent une célèbre suite numérique appelée suite de Fibonacci, les flocons de neige présentent des symétries hexagonales particulières et la morphologie de la fougère décrit une géométrie fractale.'
+				'nom' : 'La merveilleuse présence des mathématiques dans la nature',
+				'contenu' : 'Avez-vous déjà observé la forme d’une fleur de tournesol, la structure d’un flocon de neige ou la morphologie d’une fougère ? Au-delà de leur beauté fascinante, on peut aussi y voir des objets mathématiques, puisque les spirales de la fleur de tournesol suivent une célèbre suite numérique appelée suite de Fibonacci, les flocons de neige présentent des symétries hexagonales particulières et la morphologie de la fougère décrit une géométrie fractale.'
 			},
 			{
-				'name' : 'Windows 10, à l’image de Linux Microsoft annonce un gestionnaire de paquets',
-				'content' : 'Ce gestionnaire de paquets sous Windows 10 est évidemment inspiré du monde Linux. Il s’inscrit dans une démarche plus globale visant un rapprochant entre les deux systèmes d’exploitation. Depuis plusieurs années maintenant Microsoft s’est officiellement engagé dans le monde Linux. Après avoir lancé le sous-système Windows pour Linux, y compris sa deuxième version avec l’arrivée de Windows 10 Mai 2020, le géant présente un gestionnaire de paquets. La démarche permet de faire les yeux doux aux utilisateurs de Linux puisqu’ils ne seront plus trop dépaysés avec Windows 10.'
+				'nom' : 'Windows 10, à l’image de Linux Microsoft annonce un gestionnaire de paquets',
+				'contenu' : 'Ce gestionnaire de paquets sous Windows 10 est évidemment inspiré du monde Linux. Il s’inscrit dans une démarche plus globale visant un rapprochant entre les deux systèmes d’exploitation. Depuis plusieurs années maintenant Microsoft s’est officiellement engagé dans le monde Linux. Après avoir lancé le sous-système Windows pour Linux, y compris sa deuxième version avec l’arrivée de Windows 10 Mai 2020, le géant présente un gestionnaire de paquets. La démarche permet de faire les yeux doux aux utilisateurs de Linux puisqu’ils ne seront plus trop dépaysés avec Windows 10.'
 			}
 		];
 
-		$('#search').keyup(function(k){if(k.keyCode === 13){
-			var search = $(this).val();
-			$('#results').html('Résultats de recherche pour '+search+' :<br/><br/>');
-			for (i in articles) {
-				if (articles[i]['name'].replace(search,'') != articles[i]['name']
-					|| articles[i]['content'].replace(search,'') != articles[i]['content']) $('#results').append(articles[i]['name']+'<br/>');
+		// Tableau des ressemblances contenant des tableaux de mots censés se ressembler :
+		ressemblances = [
+			['espace','spatial'],
+			['fusée','lanceur'],
+			['astronaute','cosmonaute','spationaute','taïkonaute']
+		];
+
+		// Fonction qui contient le fonctionnement intégral de notre moteur de recherche
+		// Elle est déclenchée à l'appuie sur Entrée lors de la saisie dans la barre de recherche
+		$('#recherche').keyup(function(k){if(k.keyCode === 13){
+
+			// ** Prise en compte et remise en forme de la recherche **
+
+			// Stockage de la valeur textuel du champ de texte de la barre de recherche
+			var recherche = $(this).val();
+			// Affichage à l'utilisateur que sa requête a bien été prise en compte
+			$('#resultats').html('Résultats de recherche pour '+recherche+' :<br/><br/>');
+			// Mise de la requête sous forme de tableau tout en ignorant le nombre d'espaces entre les mots
+			var rechercheMotParMot = recherche.replace(/ {1,}/g,' ').replace(/^ /,'').replace(/ $/,'').split(' ');
+			// Enlèvement des détails superflus de chaque mot
+			for (indexMot in rechercheMotParMot) rechercheMotParMot[indexMot] = rechercheMotParMot[indexMot].toLowerCase().replace(/s$/,'');
+			// Recherche d'éventuelles ressemblances pour chaque mot
+			// Parcour de chaque mot uniquement jusqu'à la longueur initiale
+			for (var indexMot = 0, len=rechercheMotParMot.length; indexMot < len; indexMot++) {
+				// Parcour des tableaux de ressemblances
+				for (indexRessemblances in ressemblances) {
+					// Parcour de chaque mot dans un des tableaux
+					for (indexMotRessemblent in ressemblances[indexRessemblances]) {
+						// Si un de nos mots dans notre tableau est dans un des tableaux de ressemblance
+						if (ressemblances[indexRessemblances][indexMotRessemblent] == rechercheMotParMot[indexMot]) {
+							// On ajoute alors tous ceux qui se trouvent dans ce dernier
+							for (indexMotRessemblent2 in ressemblances[indexRessemblances]) rechercheMotParMot.push(ressemblances[indexRessemblances][indexMotRessemblent2]);
+							// Puis on met fin à la boucle sur les mots ressemblants
+							break;
+						}
+					}
+				}
 			}
+			// Copie intégrale de notre tableau
+			rechercheMotParMotAvecDoublons = $.extend(true,[],rechercheMotParMot);
+			// Puis vidage de notre tableau
+			var rechercheMotParMot = [];
+			// Pour chaque mot dans notre tableau contenant éventuellement des doublons
+			for (indexMot in rechercheMotParMotAvecDoublons) {
+				// On considère qu'il n'y a pas de doublons par défaut
+				var doublon = false;
+				// Pour chaque mot que l'on a pu ajouter dans notre tableau sans doublon
+				for (indexMot2 in rechercheMotParMot) {
+					// Si le mot s'y trouve déjà
+					if (rechercheMotParMotAvecDoublons[indexMot] == rechercheMotParMot[indexMot2]) {
+						// On considère qu'il s'agit d'un doublon
+						doublon = true;
+						// Puis on stoppe la boucle sur notre tableau sans doublons
+						break;
+					}
+				}
+				// Si le nom n'est pas un doublon, on peut donc l'ajouter
+				if (!doublon) rechercheMotParMot.push(rechercheMotParMotAvecDoublons[indexMot]);
+			}
+
+
+			// ** Recherche dans chaque article **
+
+			// Définition des deux types d'éléments pour chaque article à des fins d'optimisation
+			var elementsArticle = ['nom','contenu'];
+			// Définition du tableau qui va contenir les rendus des articles trouvés
+			var resultats = [];
+			// Définition du tableau qui va contenir le nombre d'ocurrences rencontrées pour chaque article
+			var classementOccurrences = [];
+			// Pour chaque article
+			for (indexArticle in articles) {
+				// On considère par défaut qu'aucune occurrence a été trouvée
+				var occurrenceTrouvee = false;
+				// On initialise le nombre d'occurrences
+				var nombreOccurrences = 0;
+				// Définition du tableau qui va contenir le rendu du nom et du contenu de l'article
+				var rendus = [];
+				// Pour le titre puis le contenu de l'article
+				for (indexElement in elementsArticle) {
+					// On définit notre ensemble de mots sur lequel effectuer notre recherche
+					var motsArticle = articles[indexArticle][elementsArticle[indexElement]].split(' ');
+					// Définition de notre texte de rendu
+					var rendu = '';
+					// Pour chaque mot dans notre ensemble de mots
+					for (indexMotsArticle in motsArticle) {
+						// On considère que le mot en cours de comparaison ne correspond pas
+						var occurrenceMot = false;
+						// Pour chaque mot dans notre recherche
+						for (indexMot in rechercheMotParMot) {
+							// Si le mot sans les mêmes détails superflus est le même, l'occurrence est donc trouvée
+							if (motsArticle[indexMotsArticle].toLowerCase().replace(/s$/,'') == rechercheMotParMot[indexMot]) occurrenceMot = true;
+						}
+						// Lorsqu'une occurrence est trouvée
+						if (occurrenceMot) {
+							// On ajoute à notre rendu le texte balisé
+							rendu += ' <b>'+motsArticle[indexMotsArticle]+'</b>';
+							// Puis l'on considère que notre article correspond aux critères de recherche
+							occurrenceTrouvee = true;
+							// On augmente ainsi le nombre d'occurrences
+							nombreOccurrences++;
+						}
+						// Si ce n'est pas le cas, on ajoute simplement le mot tel quel
+						else rendu += ' '+motsArticle[indexMotsArticle];
+					}
+					// Ajout du rendu au tableau des rendus
+					rendus.push(rendu);
+				}
+				// Si l'article correspond à la recherche
+				if (occurrenceTrouvee) {
+					// On ajoute au tableau des résultats ses rendus
+					resultats.push(rendus);
+					// Puis on ajoute au classement des occurrences son nombre d'occurrences rencontrées
+					classementOccurrences.push(nombreOccurrences);
+				}
+			}
+			// Copie intégrale du classement des occurrences
+			classementOccurrencesNonClasses = $.extend(true,[],classementOccurrences);
+			// Pour chaque nombre d'occurrences, on sauvegarde l'index avec grâce à un tableau
+			for (indexOccurrences in classementOccurrencesNonClasses) classementOccurrencesNonClasses[indexOccurrences] = [indexOccurrences,classementOccurrencesNonClasses[indexOccurrences]];
+			// Puis on vide notre tableau initial afin de le remplir à nouveau
+			classementOccurrences = [];
+			// Tant que notre tableau non classé n'est pas vide
+			while (classementOccurrencesNonClasses.length > 0) {
+				// On considère que le premier index est par défaut celui qui a le plus grand nombre
+				var plusOccurrences = classementOccurrencesNonClasses[0];
+				// Pour chaque nombre d'occurrence non classées
+				for (indexOccurrences in classementOccurrencesNonClasses) {
+					// Si on trouve plus grand, on remplace donc le tableau
+					if (classementOccurrencesNonClasses[indexOccurrences][1] > plusOccurrences[1]) plusOccurrences = classementOccurrencesNonClasses[indexOccurrences];
+				}
+				// Ajout du tableau contenant l'index et le nombre d'occurrences le plus grand pour chaque itération
+				classementOccurrences.push(plusOccurrences);
+				// Puis suppression de ce tableau dans notre tableau temporaire
+				// Pour chaque index dans celui-ci
+				for (indexOccurrences in classementOccurrencesNonClasses) {
+					// Si l'index stocké correspond à celui du plus grand nombre d'occurrence pour l'itération en cours
+					if (classementOccurrencesNonClasses[indexOccurrences][0] == plusOccurrences[0]) {
+						// On supprime le tableau en question
+						classementOccurrencesNonClasses.splice(indexOccurrences,1);
+						// Puis on stoppe la boucle sur les nombres d'occurrences non classés
+						break;
+					}
+				}
+			}
+			// Pour chaque nombre d'occurrences classés, on affiche les rendus contenus dans les résultats
+			for (indexOccurrences in classementOccurrences) $('#resultats').append('<b>'+resultats[classementOccurrences[indexOccurrences][0]][0]+'</b><br/>'+resultats[classementOccurrences[indexOccurrences][0]][1]+'<br/>');
 		}});
 
-		for (i in articles) $('#articles').append('<tr><td><b>'+articles[i]['name']+'</b></td></tr><tr><td>'+articles[i]['content']+'</td></tr>');
+		// Boucle permettant d'afficher les articles en entier afin d'avoir une vue d'ensemble de notre base de données
+		for (i in articles) $('#articles').append('<tr><td><b>'+articles[i]['nom']+'</b></td></tr><tr><td>'+articles[i]['contenu']+'</td></tr>');
 	});
 	</script>
 </head>
 <body>
-	Rechercher : <input type="text" id="search" size="30"/>
-	<div id="results"></div>
+	Rechercher : <input type="text" id="recherche" size="30"/>
+	<div id="resultats"></div>
 	<hr/>
 	<h3>Les articles sur lesquels les recherches sont effectuées :</h3>
 	<table id="articles"></table>
