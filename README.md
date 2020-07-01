@@ -1,2 +1,2 @@
 # Moteurs-de-recherche
-Dépôts des codes des moteurs de recherche que j'ai développé.
+Dépôt des codes des moteurs de recherche que j'ai développé.
